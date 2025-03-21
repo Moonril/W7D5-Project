@@ -31,14 +31,14 @@ const getVegetableDetails = function() {
     .then((response) => {
         if(response.ok){
             console.log('zucchina recuperata con successo!!', response)
-            
+            return response.json()
         } else {
             console.log(response)
             throw new Error('zucchina perduta :(')
         }
     })
     .then((data) => {
-        console.log('data', data) //data is undefined
+        console.log('data', data)
         //dati card
         const title  = document.getElementById('name')
         const brand = document.getElementById('brand')
@@ -50,7 +50,9 @@ const getVegetableDetails = function() {
         brand.innerText = data.brand
         description.innerText = data.description
         price.innerText = data.price
-        imgUrl.value = data.imageUrl
+        imgUrl.src = data.imageUrl  // .src!!!
+
+        console.log('image url', data.imageUrl) 
 
         
     })
@@ -59,4 +61,38 @@ const getVegetableDetails = function() {
     })
 }
 
+// modifica, sposta all'altra pagina
+
+const editProduct = function () {
+    location.assign('./backoffice.html?id=' + productId)
+  }
+
+// elimina l'oggetto dall'array - aggiungi modale conferm
+
+const deleteProduct = function () {
+    fetch(urlStrive + '/' + productId, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": apiKey
+    }
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('zucchina ELIMINATA :(')
+
+
+          //home
+          location.assign('./index.html')
+        } else {
+          throw new Error('eliminazione zucchina NON andata a buon fine!')
+        }
+      })
+      .catch((error) => {
+        console.log('ERRORE NELLA CANCELLAZIONE', error)
+      })
+  }
+
+
+
+//chiamale le funzioni!!!!
 getVegetableDetails()

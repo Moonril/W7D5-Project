@@ -57,9 +57,9 @@ const getProducts = function () {
                         <p class="card-text">${product.price} €</p>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-outline-secondary btn-sm view" data-bs-toggle="modal" data-bs-target="#exampleModal"><a href="./details.html?id=${product._id}" class="btn btn-primary">View</a></button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm view"><a href="./details.html?id=${product._id}" class="text-dark text-decoration-none">View</a></button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm view"><a href="./backoffice.html?id=${product._id}" class="text-dark text-decoration-none">Edit</a></button>
                             </div>
-                            <small class="text-muted">${product._id}</small>
                         </div>
                     </div>
                 </div>
