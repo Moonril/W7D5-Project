@@ -40,16 +40,16 @@ const getVegetableDetails = function() {
     .then((data) => {
         console.log('data', data)
         //dati card
-        const title  = document.getElementById('name')
+        const name = document.getElementById('name')
         const brand = document.getElementById('brand')
-        const description  = document.getElementById('description')
-        const price  = document.getElementById('price')
-        const imgUrl  = document.getElementById('img-url')
+        const description = document.getElementById('description')
+        const price = document.getElementById('price')
+        const imgUrl = document.getElementById('img-url')
 
-        title.innerText = data.name
+        name.innerText = data.name
         brand.innerText = data.brand
         description.innerText = data.description
-        price.innerText = data.price
+        price.innerText = data.price + '€'
         imgUrl.src = data.imageUrl  // .src!!!
 
         console.log('image url', data.imageUrl) 
@@ -69,6 +69,28 @@ const editProduct = function () {
 
 // elimina l'oggetto dall'array - aggiungi modale conferm
 
+// alert pop up
+
+const alert = document.getElementById('alert')
+
+const popUp = function (color) {
+
+    alert.classList.add('alert-' + color)
+
+    alert.classList.remove('alert-coming')
+    alert.classList.remove('alert-going')
+    alert.classList.add('invisible')
+
+    alert.classList.remove('invisible')
+    alert.classList.add('alert-coming')
+  
+    setTimeout(function () {
+      alert.classList.add('alert-going')
+
+    }, 2000) // 3s
+}
+
+
 const deleteProduct = function () {
     fetch(urlStrive + '/' + productId, {
       method: 'DELETE',
@@ -78,11 +100,17 @@ const deleteProduct = function () {
     })
       .then((response) => {
         if (response.ok) {
-          alert('zucchina ELIMINATA :(')
+          //alert('zucchina ELIMINATA :(')
+            const deletePopUp = function () {
+                popUp('danger')
+                alert.textContent = 'Zucchina Eliminata :('
+                setTimeout(function(){
+                    //home
+                      location.assign('./index.html')
+                }, 2000)
+            }
+            deletePopUp()
 
-
-          //home
-          location.assign('./index.html')
         } else {
           throw new Error('eliminazione zucchina NON andata a buon fine!')
         }

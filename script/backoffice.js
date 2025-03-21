@@ -12,6 +12,11 @@ printDateInFooter()
 const apiKey = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2RkMWU5NzM4MzRiZjAwMTUwMDA2ZWYiLCJpYXQiOjE3NDI1NDQ1MzUsImV4cCI6MTc0Mzc1NDEzNX0.VjOHhUmp7-Ze7323I_6rWZAog6kMLeQmD9yt4wOeXmg"
 const urlStrive = "https://striveschool-api.herokuapp.com/api/product/"
 
+// id pagine
+const URLparameters = new URLSearchParams(location.search)
+const productId = URLparameters.get('id')
+
+
 // creare oggetto per ogni prodotto //name - brand -description -price -img
 
 class Product {
@@ -24,6 +29,7 @@ class Product {
     }
 }
 
+
 // form
 
 const nameInput = document.getElementById('name')
@@ -31,6 +37,73 @@ const brandInput = document.getElementById('brand')
 const urlInput = document.getElementById('url')
 const descriptionInput = document.getElementById('description')
 const priceInput = document.getElementById('price')
+
+// alert pop up
+
+const alert = document.getElementById('alert')
+
+const popUp = function (color) {
+
+    alert.classList.add('alert-' + color)
+
+    alert.classList.remove('alert-coming')
+    alert.classList.remove('alert-going')
+    alert.classList.add('invisible')
+
+    alert.classList.remove('invisible')
+    alert.classList.add('alert-coming')
+  
+    setTimeout(function () {
+      alert.classList.add('alert-going')
+
+    }, 3000) // 3s
+}
+
+// if modifica
+
+if(productId) {
+    fetch(urlStrive + '/' + productId, {
+        headers: {
+            "Authorization": apiKey
+        }
+    })
+    .then((response) => {
+        if(response.ok){
+            console.log('zucchina recuperata con successo!!', response)
+            return response.json()
+        } else {
+            console.log(response)
+            throw new Error('zucchina perduta :(')
+        }
+    })
+    .then((data) => {
+        
+        nameInput.value = data.name
+        brandInput.value = data.brand
+        descriptionInput.value = data.description
+        priceInput.value = data.price
+        urlInput.value = data.imageUrl
+
+        const create = document.getElementById('button-create')
+
+        create.innerText = 'modifica'
+        create.classList.add('btn-warning')
+
+
+    })
+    .catch((error) => {
+        console.log('errore nel recupero!', error)
+    })
+}
+
+//form
+
+const resetBtn = document.getElementById('button-reset')
+resetBtn.addEventListener('click', function () {
+    form.reset()
+
+})
+
 
 const form = document.getElementById('product-form')
 
@@ -51,12 +124,28 @@ form.addEventListener('submit', function(e) {
 
     //aggiungere if per decidere se PUT o POST
 
+    let methodToUse
+    let URLtoUse
+
+    if (productId) {
+        methodToUse = 'PUT'
+        URLtoUse = urlStrive + '/' + productId
+
+        popUp('warning')
+        alert.textContent = 'Modifica effettuata correttamente!'
+    } else {
+        methodToUse = 'POST'
+        URLtoUse = urlStrive
+        
+        popUp('success')
+        alert.textContent = 'Nuova verdura oblunga aggiunta!'
+    }
 
 
     // fetch PUT o POST
 
-    fetch(urlStrive, {
-        method: 'POST',
+    fetch(URLtoUse, {
+        method: methodToUse,
         body: JSON.stringify(product),  
         headers: {
         "Authorization": apiKey,
