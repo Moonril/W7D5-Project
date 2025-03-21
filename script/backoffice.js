@@ -89,6 +89,9 @@ if(productId) {
         create.innerText = 'modifica'
         create.classList.add('btn-warning')
 
+        const deleteBtn = document.getElementById('delete-button')
+        deleteBtn.classList.remove('d-none')
+
 
     })
     .catch((error) => {
@@ -131,14 +134,14 @@ form.addEventListener('submit', function(e) {
         methodToUse = 'PUT'
         URLtoUse = urlStrive + '/' + productId
 
-        popUp('warning')
-        alert.textContent = 'Modifica effettuata correttamente!'
+        /* popUp('warning')
+        alert.textContent = 'Modifica effettuata correttamente!' */
     } else {
         methodToUse = 'POST'
         URLtoUse = urlStrive
         
-        popUp('success')
-        alert.textContent = 'Nuova verdura oblunga aggiunta!'
+        /* popUp('success')
+        alert.textContent = 'Nuova verdura oblunga aggiunta!' */
     }
 
 
@@ -155,9 +158,13 @@ form.addEventListener('submit', function(e) {
     .then((response) => {
         if(response.ok){
             console.log('zucchina salvata con successo!!')
+            popUp('success')
+            alert.textContent = 'Operazione effettuata con successo!'
             form.reset()
         } else {
             console.log(response)
+            popUp('danger')
+            alert.textContent = 'Si è verificato un errore probabilmente hai inserito una Zucchina già esistente :('
             throw new Error('zucchina perduta :(')
         }
     })
@@ -167,3 +174,34 @@ form.addEventListener('submit', function(e) {
 
     
 })
+
+// delete button
+
+const deleteProduct = function () {
+    fetch(urlStrive + '/' + productId, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": apiKey
+    }
+    })
+      .then((response) => {
+        if (response.ok) {
+          //alert('zucchina ELIMINATA :(')
+            const deletePopUp = function () {
+                popUp('danger')
+                alert.textContent = 'Zucchina Eliminata :('
+                setTimeout(function(){
+                    //home
+                      location.assign('./index.html')
+                }, 2000)
+            }
+            deletePopUp()     
+
+        } else {
+          throw new Error('eliminazione zucchina NON andata a buon fine!')
+        }
+      })
+      .catch((error) => {
+        console.log('ERRORE NELLA CANCELLAZIONE', error)
+      })
+  }
