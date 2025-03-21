@@ -10,7 +10,7 @@ printDateInFooter()
 // url - api
 
 const apiKey = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2RkMWU5NzM4MzRiZjAwMTUwMDA2ZWYiLCJpYXQiOjE3NDI1NDQ1MzUsImV4cCI6MTc0Mzc1NDEzNX0.VjOHhUmp7-Ze7323I_6rWZAog6kMLeQmD9yt4wOeXmg"
-const urlStrive = "https://striveschool-api.herokuapp.com/api/product/"
+const urlStrive = "https://striveschool-api.herokuapp.com/api/product/"  // pure io ho la doppia '/' però non mi ha mai dato problemi...
 
 // id pagine
 const URLparameters = new URLSearchParams(location.search)
