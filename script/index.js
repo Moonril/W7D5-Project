@@ -59,7 +59,7 @@ const getProducts = function () {
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline-secondary btn-sm view" data-bs-toggle="modal" data-bs-target="#exampleModal">View</button>
                             </div>
-                            <small class="text-muted">${product.userId}</small>
+                            <small class="text-muted">${product._id}</small>
                         </div>
                     </div>
                 </div>
